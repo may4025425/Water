@@ -134,8 +134,10 @@ public class MainActivity<prublic> extends AppCompatActivity {
         }
 
         Intent intent = new Intent(this,ResultActivity.class);
-        /*在匿名類別裡用this，但你要呼叫外部類別時要注意*/
+        intent.putExtra("price",price);//相當於帶有price標籤的瓶子
         startActivity(intent);
+        /*在匿名類別裡用this，但你要呼叫外部類別時要注意*/
+
 
         /*   new AlertDialog.Builder(MainActivity.this)
                 .setTitle(title)
