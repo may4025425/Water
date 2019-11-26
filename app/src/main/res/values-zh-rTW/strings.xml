@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Water</string>
-    <string name="_water_fee">查水表</string>
     <string name="action_settings">設定</string>
     <string name="every_other_month">隔月抄表</string>
-    <string name="_monthly">當月抄表</string>
-    <string name="water_fee">水費</string>
+    <string name="water_fee">計算</string>
     <string name="ok">確認</string>
+    <string name="monthly">當月抄表</string>
+    <string name="no_input">沒有輸入</string>
+    <string name="error">錯誤</string>
+    <string name="fee">水費</string>
 </resources>

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -16,13 +15,18 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.TextView;
 
 public class MainActivity<prublic> extends AppCompatActivity {
 
     private EditText edmonth;
-    private EditText ednext;
     private Button calculate;
+    private Switch sw;
+    boolean isNext = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +34,8 @@ public class MainActivity<prublic> extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         edmonth = findViewById(R.id.month);
-        ednext = findViewById(R.id.next);
         calculate = findViewById(R.id.button);
+        sw = findViewById(R.id.sw);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -43,112 +47,88 @@ public class MainActivity<prublic> extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });//這也是匿名類別，故MainActivity目前有兩個匿名類別
+        });
 
-//        calbutton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                    calculate();
-//            }
-//        });
+        calculate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    calculate();
+            }
+        });
+
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isNext =isChecked;
+                TextView type = findViewById(R.id.type);
+                sw.setText(isNext ? getString(R.string.every_other_month) : getString(R.string.monthly));
+                type.setText(isNext?getString(R.string.every_other_month):getString(R.string.monthly));
+
+            }
+        });
     }
 
-    public void calculate(View view){
-        /*有兩種呼叫匿名類別的方式：
-        第一種是將方法直接寫在ｏｎｃｌｉｃｋ(這個匿名類別裡），
-        第二種是將方法而外寫，然後在外面建一個方法，只需在ｏｎｃｌｉｃｋ中呼叫那方法即可，
-        注意：如果已在onclick中呼叫方法calculate()，那麼下面的public void calculate(View v){.....}其（）內的View v 要刪掉*/
-        /*
-             String num = String.valueOf(edmonth.getText().toString().isEmpty());
-             String num2 = String.valueOf(ednext.getText().toString().isEmpty());
-             錯誤的地方...why?
-             Ans:既然都同樣適用於判斷要計算的標準，就不必再設定兩種變數（num、num2）了，還有isEmpty()裡要判斷的東西你也沒給，不！你給了！但你竟然把他寫在括號外面
-       */
-
-        /* 將文字做是否空值判斷，他的屬性當然是字串:TextUtils.isEmpty(java.lang.String)
-           boolean num = TextUtils.isEmpty(edmonth.getText().toString());
-           boolean num2 = TextUtils.isEmpty(ednext.getText().toString());
-           因為是判斷 ”是否“ 故使用boolean值， 你就可以直接寫成這樣：
-           if(num&&num2){
-
-           }else if(!num){
-
-            }else{
-
-             } */
-
-        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-            @Override
+    public void calculate(){
+        String title=getString(R.string.monthly);
+        String message=getString(R.string.fee);
+        int degree=0;
+        float supplement=0;
+        float k=0;
+        float price=0;
+        DialogInterface.OnClickListener listener=new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 edmonth.setText("");
-                ednext.setText("");
             }
         };
-        float supplement;
-        float price = 0; //要用它計算時就得設初值，不然會出錯
-        String title = "每月抄表費用";//上面有設值，下面settitle就不用設了，下面的message也是，如果要寫很多類似功能，但title都不一樣，就可以先不設值，只改下面的title內容即可
-        String message ;
-
-        if(TextUtils.isEmpty(edmonth.getText())&&TextUtils.isEmpty(ednext.getText())){ //發現：如果嫌棄TextUtils礙眼，可以利用電燈泡將其加到import中
-            //沒有語法問題，不需打上toString()
-            title = "錯誤";
-            message = "無法計算";
-
-        }else if(!TextUtils.isEmpty(edmonth.getText())){
-            float useddegrees = Float.parseFloat(edmonth.getText().toString());
-            /*
-            這裡的toString純粹是因為語法的問題，parseFloat(java.lang.String)，故要馬你多加一個.toString()，
-            要馬就是打成 float useddegrees = Float.parseFloat(String.valueOf(edmonth.getText()));
-                                                                                             */
-            if(useddegrees <11){
-                supplement = 0 ;
-                price = useddegrees * 7.35f + supplement;
-            }else if (useddegrees < 31){
-                supplement = 21 ;
-                price = useddegrees * 9.45f + supplement;
-            }else if (useddegrees < 51){
-                supplement = 84 ;
-                price = useddegrees * 11.55f + supplement;
-
-            }else {
-                supplement = 110.25f ;
-                price = useddegrees * 12.075f + supplement;
+        if(TextUtils.isEmpty(edmonth.getText())){
+            title=getString(R.string.error);
+            message=getString(R.string.no_input);
+        }else if(!isNext){
+            degree= Integer.parseInt(edmonth.getText().toString());
+            if(degree<=10){
+                k=7.35f;
+                supplement=0;
+            }else if(degree<=30){
+                k=9.45f;
+                supplement=21;
+            }else if(degree<=50){
+                k=11.55f;
+                supplement=84;
+            }else{
+                k=12.075f;
+                supplement=110.25f;
             }
-            message = String.valueOf(price);
+            price=degree*k-supplement;
+            message=getString(R.string.fee)+price;
         }else{
-            float useddegrees = Float.parseFloat(ednext.getText().toString());
-            if(useddegrees <11){
-                supplement = 0 ;
-                price = useddegrees * 7.35f + supplement;
-            }else if (useddegrees < 31){
-                supplement = 42 ;
-                price = useddegrees * 9.45f + supplement;
-            }else if (useddegrees < 51){
-                supplement = 168 ;
-                price = useddegrees * 11.55f + supplement;
-
-            }else {
-                supplement = 220.5f ;
-                price = useddegrees * 12.075f + supplement;
+            title=getString(R.string.every_other_month);
+            degree= Integer.parseInt(edmonth.getText().toString());
+            if(degree<=20){
+                k=7.35f;
+                supplement=0;
+            }else if(degree<=60){
+                k=9.45f;
+                supplement=42;
+            }else if(degree<=100){
+                k=11.55f;
+                supplement=168;
+            }else{
+                k=12.075f;
+                supplement=220.5f;
             }
-            message = String.valueOf(price);
+            price=degree*k-supplement;
+            message=getString(R.string.fee)+price;
         }
-
-        Intent intent = new Intent(this,ResultActivity.class);
-        intent.putExtra(getString(R.string.extra_price),price);//相當於帶有price標籤的瓶子
-        startActivity(intent);
-        /*在匿名類別裡用this，但你要呼叫外部類別時要注意*/
-
-
+            Intent intent = new Intent(this, ResultActivity.class);
+            intent.putExtra(getString(R.string.extra_price), price);
+            startActivity(intent);
 //           new AlertDialog.Builder(MainActivity.this)
 //                .setTitle(title)
-//                .setMessage(getString(R.string.fee) + message)  //字串提取
-//                .setPositiveButton(getString(R.string.ok),listener) //字串提取
+//                .setMessage(getString(R.string.fee) + message)
+//                .setPositiveButton(getString(R.string.ok),listener)
 //                .show();
 //
-
     }
-
 
 
     @Override
@@ -173,3 +153,8 @@ public class MainActivity<prublic> extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
+
+
+
+
+
