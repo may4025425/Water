@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -134,16 +135,17 @@ public class MainActivity<prublic> extends AppCompatActivity {
         }
 
         Intent intent = new Intent(this,ResultActivity.class);
-        intent.putExtra("price",price);//相當於帶有price標籤的瓶子
+        intent.putExtra(getString(R.string.extra_price),price);//相當於帶有price標籤的瓶子
         startActivity(intent);
         /*在匿名類別裡用this，但你要呼叫外部類別時要注意*/
 
 
-        /*   new AlertDialog.Builder(MainActivity.this)
-                .setTitle(title)
-                .setMessage("費用: " + message)
-                .setPositiveButton("ok",listener)
-                .show();   */
+//           new AlertDialog.Builder(MainActivity.this)
+//                .setTitle(title)
+//                .setMessage(getString(R.string.fee) + message)  //字串提取
+//                .setPositiveButton(getString(R.string.ok),listener) //字串提取
+//                .show();
+//
 
     }
 
