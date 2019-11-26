@@ -22,7 +22,7 @@ public class MainActivity<prublic> extends AppCompatActivity {
 
     private EditText edmonth;
     private EditText ednext;
-    private Button calbutton;
+    private Button calculate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class MainActivity<prublic> extends AppCompatActivity {
 
         edmonth = findViewById(R.id.month);
         ednext = findViewById(R.id.next);
-        calbutton = findViewById(R.id.button);
+        calculate = findViewById(R.id.button);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -45,15 +45,15 @@ public class MainActivity<prublic> extends AppCompatActivity {
             }
         });//這也是匿名類別，故MainActivity目前有兩個匿名類別
 
-        calbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    calculate();
-            }
-        });
+//        calbutton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                    calculate();
+//            }
+//        });
     }
 
-    public void calculate(){
+    public void calculate(View view){
         /*有兩種呼叫匿名類別的方式：
         第一種是將方法直接寫在ｏｎｃｌｉｃｋ(這個匿名類別裡），
         第二種是將方法而外寫，然後在外面建一個方法，只需在ｏｎｃｌｉｃｋ中呼叫那方法即可，
