@@ -15,9 +15,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -99,6 +101,19 @@ public class MainActivity<prublic> extends AppCompatActivity {
                 TextView type = findViewById(R.id.type);
                 sw.setText(isNext ? getString(R.string.every_other_month) : getString(R.string.monthly));
                 type.setText(isNext?getString(R.string.every_other_month):getString(R.string.monthly));
+
+            }
+        });
+
+        Spinner cities = findViewById(R.id.spinner);
+        cities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG,getResources().getStringArray(R.array.cities)[position]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
