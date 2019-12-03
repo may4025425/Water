@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,21 +23,53 @@ import android.widget.TextView;
 
 public class MainActivity<prublic> extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private EditText edmonth;
     private Button calculate;
     private Switch sw;
     boolean isNext = false;
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG,"On Destroy");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG,"On Resume");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG,"On Restart");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG,"On Pause");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG,"On Start");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG,"On Stop");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG,"On Create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        edmonth = findViewById(R.id.month);
-        calculate = findViewById(R.id.button);
-        sw = findViewById(R.id.sw);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -49,6 +82,9 @@ public class MainActivity<prublic> extends AppCompatActivity {
             }
         });
 
+        edmonth = findViewById(R.id.month);
+        calculate = findViewById(R.id.button);
+        sw = findViewById(R.id.sw);
         calculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
