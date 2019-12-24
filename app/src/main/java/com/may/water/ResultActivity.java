@@ -19,9 +19,11 @@ public class ResultActivity extends AppCompatActivity {
         Intent intent = getIntent();
         //float price = intent.getFloatExtra(getString(R.string.extra_price),-1);
         float price = intent.getFloatExtra(getString(R.string.extra_price),DEFAULT_FEE);
+
         Log.d(TAG,price + "");
         //Log.d("ResultActivity",price + "");
         TextView edprice = findViewById(R.id.price);
+
         int n = (int)(price + 0.5f);//整數的四捨五入
         edprice.setText(n+ "");
     }
